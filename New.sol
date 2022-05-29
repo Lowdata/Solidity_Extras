@@ -8,8 +8,6 @@ contract myERC20 is ERC20 {
 
 contract ERC20FixedSupply is ERC20{
     constructor() public {
-        totalSupply += 5000;
-
-        balance[msg.sender] += 5000;
+        _mint(msg.sender, 5000);
     }
 }
