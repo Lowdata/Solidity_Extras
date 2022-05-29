@@ -1,5 +1,6 @@
 //SPDX-License-Identifier: GPL-3.0
 pragma solidity >=0.8.0;
+import "github/OpenZepplin/openzeppelin-contracts/contracts/token/ERC20.sol";
 contract VOHCoinERC20{
     event Transfer(address indexed from, address indexed to, uint tokens);
     event Approval(address indexed takeOwner, address indexed spender, uint token);
@@ -59,4 +60,31 @@ contract VOHCoinERC20{
     
 
     
+}
+contract ERC20FixedSupply is ERC20{
+    constructor() public {
+        _mint(msg.sender, 5000);
+    }
+}
+//Reward for miners
+contract MinerRewardMitner {
+    ERC20Mintable _token;
+
+    constructor(ERC20Mintable token) public {
+        _token = token;
+    }
+
+        function mintMinerReward() public {
+            _token.mint(block.coinbase, 5000);
+        }
+}
+
+contract ERC20WithAutoMinerReward is ERC20 {
+    function _mintMinerReward() internal {
+        _mint(block.coinbase, 5000);
+    }
+    function _transfer(address from, address to, uint256 value) internal{
+        _mintMinerReward();
+        super._transfer(from, to, value);
+    }
 }
